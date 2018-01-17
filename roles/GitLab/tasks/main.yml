@@ -1,0 +1,10 @@
+- name: install components
+  become: true
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: latest
+  with_items:
+    - curl
+    - openssh-server
+    - ca-certificates
