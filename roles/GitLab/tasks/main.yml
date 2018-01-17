@@ -17,3 +17,10 @@
 - name: run install script
   become: true
   command: bash /tmp/script.deb.sh
+
+- name: install GitLab
+  become: true
+  apt:
+    name: "gitlab-ce"
+    update_cache: yes
+    state: latest
