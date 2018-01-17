@@ -24,3 +24,7 @@
     name: "gitlab-ce"
     update_cache: yes
     state: latest
+
+- name: reconfigure and start GitLab
+  become: true
+  command: gitlab-ctl reconfigure
