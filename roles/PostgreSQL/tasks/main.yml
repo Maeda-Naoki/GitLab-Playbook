@@ -61,3 +61,13 @@
   with_items:
     - "{{ mattermost_db.user }}"
     - "{{ gitlab_db.user }}"
+
+- name: allow PostgreSQL to listen on all assigned IP Addresses
+  become: true
+  lineinfile:
+    dest: /etc/postgresql/{{ db_version.major }}/main/postgresql.conf
+    regexp: "#listen_addresses = 'localhost'"
+    line: "listen_addresses = '*'"
+    backrefs: yes
+    backup: yes
+  notify: restart PostgreSQL
