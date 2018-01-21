@@ -3,3 +3,9 @@ OS_version:
 
 db_version:
   major: 10
+
+gitlab_db:
+  name: gitlab
+
+mattermost_db:
+  name: mattermost

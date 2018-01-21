@@ -21,3 +21,12 @@
     - postgresql-contrib
     - libpq-dev
     - python3-psycopg2
+
+- name: Create GitLab & Mattermost DataBase
+  become: true
+  become_user: postgres
+  postgresql_db:
+    name: "{{ item }}"
+  with_items:
+    - "{{ gitlab_db.name }}"
+    - "{{ mattermost_db.name }}"
