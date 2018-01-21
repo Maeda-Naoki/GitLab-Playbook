@@ -9,3 +9,14 @@
   apt_key:
     url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
     state: present
+
+- name: install PostgreSQL
+  become: true
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: present
+  with_items:
+    - postgresql-{{ db_version.major }}
+    - postgresql-contrib
+    - python-psycopg2

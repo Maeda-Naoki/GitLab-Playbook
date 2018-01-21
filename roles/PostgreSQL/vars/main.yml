@@ -1,2 +1,5 @@
 OS_version:
   code_name: xenial
+
+db_version:
+  major: 10
