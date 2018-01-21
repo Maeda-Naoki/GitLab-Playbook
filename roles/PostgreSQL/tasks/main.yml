@@ -30,3 +30,11 @@
   with_items:
     - "{{ gitlab_db.name }}"
     - "{{ mattermost_db.name }}"
+
+- name: add PostgreSQL extension pg_trgm to GitLab DB
+  become: true
+  become_user: postgres
+  postgresql_ext:
+    name: pg_trgm
+    db: "{{ gitlab_db.name }}"
+    port: "{{ db_server.port }}"

@@ -1,6 +1,9 @@
 OS_version:
   code_name: xenial
 
+db_server:
+  port: 5432
+
 db_version:
   major: 10
 
