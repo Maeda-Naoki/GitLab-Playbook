@@ -19,4 +19,5 @@
   with_items:
     - postgresql-{{ db_version.major }}
     - postgresql-contrib
-    - python-psycopg2
+    - libpq-dev
+    - python3-psycopg2
