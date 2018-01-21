@@ -1,0 +1,6 @@
+- name: install NGINX
+  become: true
+  apt:
+    name: nginx
+    update_cache: yes
+    state: latest
