@@ -71,3 +71,13 @@
     backrefs: yes
     backup: yes
   notify: restart PostgreSQL
+
+- name: modify the file pg_hba.conf to allow the Mattermost server to communicate with the database.
+  become: true
+  lineinfile:
+    dest: /etc/postgresql/{{ db_version.major }}/main/pg_hba.conf
+    regexp: 'local   all             all                                     peer'
+    line: 'local   all             all                                     trust'
+    backrefs: yes
+    backup: yes
+  notify: restart PostgreSQL
