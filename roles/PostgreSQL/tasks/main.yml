@@ -51,3 +51,13 @@
   with_items:
     - "{{ gitlab_db }}"
     - "{{ mattermost_db }}"
+
+- name: ensure user does not have unnecessary privilege
+  become: true
+  become_user: postgres
+  postgresql_user:
+    name: "{{ item }}"
+    role_attr_flags: NOSUPERUSER,NOCREATEDB
+  with_items:
+    - "{{ mattermost_db.user }}"
+    - "{{ gitlab_db.user }}"
