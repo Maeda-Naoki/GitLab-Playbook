@@ -9,6 +9,10 @@ db_version:
 
 gitlab_db:
   name: gitlab
+  user: gitlab
+  password: password
 
 mattermost_db:
   name: mattermost
+  user: mmost
+  password: password

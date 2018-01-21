@@ -38,3 +38,16 @@
     name: pg_trgm
     db: "{{ gitlab_db.name }}"
     port: "{{ db_server.port }}"
+
+- name: grant the user access to the GitLab & Mattermost DataBase.
+  become: true
+  become_user: postgres
+  postgresql_user:
+    db: "{{ item.name}}"
+    name: "{{ item.user }}"
+    password: "{{ item.password }}"
+    encrypted: true
+    priv: ALL
+  with_items:
+    - "{{ gitlab_db }}"
+    - "{{ mattermost_db }}"
