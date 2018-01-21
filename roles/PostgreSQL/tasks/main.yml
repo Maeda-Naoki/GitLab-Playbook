@@ -62,6 +62,16 @@
     - "{{ mattermost_db.user }}"
     - "{{ gitlab_db.user }}"
 
+- name: change GitLab & Mattermost DataBase owner
+  become: true
+  become_user: postgres
+  postgresql_db:
+    name: "{{ item.name }}"
+    owner: "{{ item.user }}"
+  with_items:
+    - "{{ gitlab_db }}"
+    - "{{ mattermost_db }}"
+
 - name: allow PostgreSQL to listen on all assigned IP Addresses
   become: true
   lineinfile:
