@@ -3,3 +3,9 @@
   apt_repository:
     repo: deb http://apt.postgresql.org/pub/repos/apt/ {{ OS_version.code_name }}-pgdg main
     state: present
+
+- name: import the repository signing key
+  become: true
+  apt_key:
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    state: present
