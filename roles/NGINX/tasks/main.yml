@@ -10,3 +10,9 @@
   systemd:
     name: nginx
     enabled: true
+
+- name: Start NGINX
+  become: true
+  systemd:
+    name: nginx
+    state: started
