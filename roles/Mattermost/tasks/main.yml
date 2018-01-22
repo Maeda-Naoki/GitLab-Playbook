@@ -30,3 +30,12 @@
   file:
     path: /opt/mattermost/data
     state: directory
+
+- name: change directory ownership
+  become: true
+  file:
+    path: /opt/mattermost
+    state: directory
+    recurse: yes
+    owner: "{{ user.name }}"
+    group: "{{ user.group }}"
