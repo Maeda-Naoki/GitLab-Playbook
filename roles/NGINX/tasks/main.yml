@@ -4,3 +4,9 @@
     name: nginx
     update_cache: yes
     state: latest
+
+- name: Set NGINX to start at system boot
+  become: true
+  systemd:
+    name: nginx
+    enabled: true
