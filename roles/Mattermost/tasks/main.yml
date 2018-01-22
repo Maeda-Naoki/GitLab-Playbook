@@ -1,0 +1,4 @@
+- name: download Mattermost
+  get_url:
+    url: "https://releases.mattermost.com/{{ version.full }}/mattermost-team-{{ version.full }}-linux-amd64.tar.gz"
+    dest: /tmp/
