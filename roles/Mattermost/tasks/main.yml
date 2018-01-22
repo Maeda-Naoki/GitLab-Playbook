@@ -2,3 +2,10 @@
   get_url:
     url: "https://releases.mattermost.com/{{ version.full }}/mattermost-team-{{ version.full }}-linux-amd64.tar.gz"
     dest: /tmp/
+
+- name: extract the Mattermost Server files
+  become: true
+  unarchive:
+    src: /tmp/mattermost-team-{{ version.full }}-linux-amd64.tar.gz
+    dest: /opt/
+    copy: no
