@@ -1,0 +1,3 @@
+[submodule "Mattermost"]
+	path = Mattermost
+	url = https://github.com/mattermost/mattermost-server.git
