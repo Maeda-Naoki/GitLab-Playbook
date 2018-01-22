@@ -10,6 +10,13 @@
     dest: /opt/
     copy: no
 
+- name: create Mattermost group
+  become: true
+  group:
+    name: "{{ user.group }}"
+    state: present
+    system: yes
+
 - name: create the storage directory for files
   become: true
   file:

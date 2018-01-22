@@ -1,2 +1,5 @@
 version:
   full: 4.6.0
+
+user:
+  group: mattermost
