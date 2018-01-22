@@ -9,3 +9,9 @@
     src: /tmp/mattermost-team-{{ version.full }}-linux-amd64.tar.gz
     dest: /opt/
     copy: no
+
+- name: create the storage directory for files
+  become: true
+  file:
+    path: /opt/mattermost/data
+    state: directory
