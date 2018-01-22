@@ -17,6 +17,14 @@
     state: present
     system: yes
 
+- name: create mattermost user
+  become: true
+  user:
+    name: "{{ user.name }}"
+    group: "{{ user.group }}"
+    system: yes
+    createhome: no
+
 - name: create the storage directory for files
   become: true
   file:
