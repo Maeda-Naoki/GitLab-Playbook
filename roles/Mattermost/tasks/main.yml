@@ -48,3 +48,11 @@
     owner: root
     group: root
     mode: 0664
+
+- name: start Mattermost & set Mattermost to start on machine start up
+  become: true
+  systemd:
+    daemon_reload: yes
+    name: mattermost
+    enabled: yes
+    state: started
