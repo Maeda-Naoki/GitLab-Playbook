@@ -39,3 +39,12 @@
     recurse: yes
     owner: "{{ user.name }}"
     group: "{{ user.group }}"
+
+- name: create mattermost systemd service
+  become: true
+  template:
+    src: mattermost.service.j2
+    dest: /lib/systemd/system/mattermost.service
+    owner: root
+    group: root
+    mode: 0664
