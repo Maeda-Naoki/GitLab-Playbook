@@ -1,3 +1,6 @@
+- name: include DB vars
+  include_vars: ../../postgresql/vars/main.yml
+
 - name: download Mattermost
   get_url:
     url: "https://releases.mattermost.com/{{ version.full }}/mattermost-team-{{ version.full }}-linux-amd64.tar.gz"
@@ -47,6 +50,15 @@
     dest: /lib/systemd/system/mattermost.service
     owner: root
     group: root
+    mode: 0664
+
+- name: Change config.json
+  become: true
+  template:
+    src: default.json.j2
+    dest: /opt/mattermost/config/config.json
+    owner: "{{ user.name }}"
+    group: "{{ user.group }}"
     mode: 0664
 
 - name: start Mattermost & set Mattermost to start on machine start up
