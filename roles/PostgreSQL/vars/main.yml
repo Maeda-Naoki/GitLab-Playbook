@@ -1,0 +1,18 @@
+OS_version:
+  code_name: xenial
+
+db_server:
+  port: 5432
+
+db_version:
+  major: 10
+
+gitlab_db:
+  name: gitlab
+  user: gitlab
+  password: password
+
+mattermost_db:
+  name: mattermost
+  user: mmost
+  password: password
