@@ -1,4 +1,5 @@
 - hosts: GitLab
 
   roles:
+    - PostgreSQL
     - Mattermost
