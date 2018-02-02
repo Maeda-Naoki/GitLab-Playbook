@@ -1,5 +1,5 @@
 - name: include DB vars
-  include_vars: ../../postgresql/vars/main.yml
+  include_vars: ../../PostgreSQL/vars/main.yml
 
 - name: download Mattermost
   get_url:
