@@ -18,7 +18,7 @@
     state: started
 
 - name: create nginx available & enabled sites directory
-  include: createDirectory.yml
+  include_tasks: createDirectory.yml
   with_items:
     - /etc/nginx/sites-available
     - /etc/nginx/sites-enabled
