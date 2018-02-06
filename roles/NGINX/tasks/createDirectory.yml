@@ -1,0 +1,11 @@
+- name: confirm existence of directory
+  stat:
+    path: "{{ item }}"
+  register: targetDirectory
+
+- name: create directory
+  become: true
+  file:
+    path: "{{ item }}"
+    state: directory
+  when: not targetDirectory.stat.exists
