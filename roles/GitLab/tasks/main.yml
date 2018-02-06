@@ -1,3 +1,6 @@
+- name: include DB vars
+  include_vars: ../../PostgreSQL/vars/main.yml
+
 - name: install components
   become: true
   apt:
@@ -24,6 +27,13 @@
     name: "gitlab-ce"
     update_cache: yes
     state: latest
+
+- name: Change gitlab.rb
+  become: true
+  template:
+    src: gitlab.rb.j2
+    dest: /etc/gitlab/gitlab.rb
+    mode: 0600
 
 - name: reconfigure and start GitLab
   become: true
