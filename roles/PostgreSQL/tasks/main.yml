@@ -1,0 +1,93 @@
+- name: add PostgreSQL repository
+  become: true
+  apt_repository:
+    repo: deb http://apt.postgresql.org/pub/repos/apt/ {{ OS_version.code_name }}-pgdg main
+    state: present
+
+- name: import the repository signing key
+  become: true
+  apt_key:
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    state: present
+
+- name: install PostgreSQL
+  become: true
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: present
+  with_items:
+    - postgresql-{{ db_version.major }}
+    - postgresql-contrib
+    - libpq-dev
+    - python3-psycopg2
+
+- name: Create GitLab & Mattermost DataBase
+  become: true
+  become_user: postgres
+  postgresql_db:
+    name: "{{ item }}"
+  with_items:
+    - "{{ gitlab_db.name }}"
+    - "{{ mattermost_db.name }}"
+
+- name: add PostgreSQL extension pg_trgm to GitLab DB
+  become: true
+  become_user: postgres
+  postgresql_ext:
+    name: pg_trgm
+    db: "{{ gitlab_db.name }}"
+    port: "{{ db_server.port }}"
+
+- name: grant the user access to the GitLab & Mattermost DataBase.
+  become: true
+  become_user: postgres
+  postgresql_user:
+    db: "{{ item.name}}"
+    name: "{{ item.user }}"
+    password: "{{ item.password }}"
+    encrypted: true
+    priv: ALL
+  with_items:
+    - "{{ gitlab_db }}"
+    - "{{ mattermost_db }}"
+
+- name: ensure user does not have unnecessary privilege
+  become: true
+  become_user: postgres
+  postgresql_user:
+    name: "{{ item }}"
+    role_attr_flags: NOSUPERUSER,NOCREATEDB
+  with_items:
+    - "{{ mattermost_db.user }}"
+    - "{{ gitlab_db.user }}"
+
+- name: change GitLab & Mattermost DataBase owner
+  become: true
+  become_user: postgres
+  postgresql_db:
+    name: "{{ item.name }}"
+    owner: "{{ item.user }}"
+  with_items:
+    - "{{ gitlab_db }}"
+    - "{{ mattermost_db }}"
+
+- name: allow PostgreSQL to listen on all assigned IP Addresses
+  become: true
+  lineinfile:
+    dest: /etc/postgresql/{{ db_version.major }}/main/postgresql.conf
+    regexp: "#listen_addresses = 'localhost'"
+    line: "listen_addresses = '*'"
+    backrefs: yes
+    backup: yes
+  notify: restart PostgreSQL
+
+- name: modify the file pg_hba.conf to allow the Mattermost server to communicate with the database.
+  become: true
+  lineinfile:
+    dest: /etc/postgresql/{{ db_version.major }}/main/pg_hba.conf
+    regexp: 'local   all             all                                     peer'
+    line: 'local   all             all                                     trust'
+    backrefs: yes
+    backup: yes
+  notify: restart PostgreSQL
