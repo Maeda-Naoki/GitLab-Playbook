@@ -1,0 +1,3 @@
+[submodule "Omnibus-GitLab"]
+	path = Omnibus-GitLab
+	url = https://gitlab.com/gitlab-org/omnibus-gitlab.git
