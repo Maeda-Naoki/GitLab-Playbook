@@ -1,0 +1,70 @@
+- name: include DB vars
+  include_vars: ../../PostgreSQL/vars/main.yml
+
+- name: download Mattermost
+  get_url:
+    url: "https://releases.mattermost.com/{{ version.full }}/mattermost-team-{{ version.full }}-linux-amd64.tar.gz"
+    dest: /tmp/
+
+- name: extract the Mattermost Server files
+  become: true
+  unarchive:
+    src: /tmp/mattermost-team-{{ version.full }}-linux-amd64.tar.gz
+    dest: /opt/
+    copy: no
+
+- name: create Mattermost group
+  become: true
+  group:
+    name: "{{ user.group }}"
+    state: present
+    system: yes
+
+- name: create mattermost user
+  become: true
+  user:
+    name: "{{ user.name }}"
+    group: "{{ user.group }}"
+    system: yes
+    createhome: no
+
+- name: create the storage directory for files
+  become: true
+  file:
+    path: /opt/mattermost/data
+    state: directory
+
+- name: change directory ownership
+  become: true
+  file:
+    path: /opt/mattermost
+    state: directory
+    recurse: yes
+    owner: "{{ user.name }}"
+    group: "{{ user.group }}"
+
+- name: create mattermost systemd service
+  become: true
+  template:
+    src: mattermost.service.j2
+    dest: /lib/systemd/system/mattermost.service
+    owner: root
+    group: root
+    mode: 0664
+
+- name: Change config.json
+  become: true
+  template:
+    src: default.json.j2
+    dest: /opt/mattermost/config/config.json
+    owner: "{{ user.name }}"
+    group: "{{ user.group }}"
+    mode: 0664
+
+- name: start Mattermost & set Mattermost to start on machine start up
+  become: true
+  systemd:
+    daemon_reload: yes
+    name: mattermost
+    enabled: yes
+    state: started

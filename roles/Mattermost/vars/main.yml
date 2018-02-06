@@ -1,0 +1,10 @@
+version:
+  full: 4.6.0
+
+user:
+  name: mattermost
+  group: mattermost
+
+DB:
+  driverName: postgres
+  dataSource: postgres://{{ mattermost_db.user }}:{{ mattermost_db.password }}@localhost:{{ db_server.port }}/mattermost?sslmode=disable&connect_timeout=10

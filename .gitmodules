@@ -1,3 +1,7 @@
 [submodule "Omnibus-GitLab"]
 	path = Omnibus-GitLab
 	url = https://gitlab.com/gitlab-org/omnibus-gitlab.git
+
+[submodule "Mattermost"]
+	path = Mattermost
+	url = https://github.com/mattermost/mattermost-server.git
