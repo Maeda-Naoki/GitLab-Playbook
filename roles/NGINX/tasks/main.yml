@@ -22,3 +22,17 @@
   with_items:
     - /etc/nginx/sites-available
     - /etc/nginx/sites-enabled
+
+- name: Create configuration file for Mattermost
+  become: true
+  template:
+    src: GitLab.j2
+    dest: /etc/nginx/sites-available/GitLab
+
+- name: Create link
+  become: true
+  file:
+    src: /etc/nginx/sites-available/GitLab
+    dest: /etc/nginx/sites-enabled/GitLab
+    state: link
+  notify: Restart NGINX
