@@ -1,0 +1,24 @@
+- name: install NGINX
+  become: true
+  apt:
+    name: nginx
+    update_cache: yes
+    state: latest
+
+- name: Set NGINX to start at system boot
+  become: true
+  systemd:
+    name: nginx
+    enabled: true
+
+- name: Start NGINX
+  become: true
+  systemd:
+    name: nginx
+    state: started
+
+- name: create nginx available & enabled sites directory
+  include_tasks: createDirectory.yml
+  with_items:
+    - /etc/nginx/sites-available
+    - /etc/nginx/sites-enabled

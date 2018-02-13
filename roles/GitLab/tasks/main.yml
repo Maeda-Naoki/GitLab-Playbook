@@ -1,0 +1,46 @@
+- name: include DB vars
+  include_vars: ../../PostgreSQL/vars/main.yml
+
+- name: install components
+  become: true
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: latest
+  with_items:
+    - curl
+    - openssh-server
+    - ca-certificates
+
+- name: get GitLab repository installation script
+  get_url:
+    url: https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh
+    dest: /tmp/script.deb.sh
+
+- name: run install script
+  become: true
+  command: bash /tmp/script.deb.sh
+
+- name: Link non-packaged executables
+  include_tasks: link2ExtPostgreSQL.yml
+  with_items:
+    - pg_dump
+    - psql
+
+- name: install GitLab
+  become: true
+  apt:
+    name: "gitlab-ce"
+    update_cache: yes
+    state: latest
+
+- name: Change gitlab.rb
+  become: true
+  template:
+    src: gitlab.rb.j2
+    dest: /etc/gitlab/gitlab.rb
+    mode: 0600
+
+- name: reconfigure and start GitLab
+  become: true
+  command: gitlab-ctl reconfigure

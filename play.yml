@@ -1,0 +1,7 @@
+- hosts: GitLab
+
+  roles:
+    - PostgreSQL
+    - GitLab
+    - Mattermost
+    - NGINX

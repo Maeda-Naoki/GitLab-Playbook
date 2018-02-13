@@ -1,0 +1,19 @@
+- name: Check exist command
+  stat:
+    path: /usr/bin/{{ item }}
+  register: command
+
+- name: Check exist GitLab
+  stat:
+    path: /opt/gitlab/bin/
+  register: GitLabBin
+
+- name: Link to /opt/gitlab/bin/
+  become: true
+  file:
+    src: /usr/bin/{{ item }}
+    dest: /opt/gitlab/bin/{{ item }}
+    state: link
+  when:
+  - command.stat.exists
+  - GitLabBin.stat.exists
