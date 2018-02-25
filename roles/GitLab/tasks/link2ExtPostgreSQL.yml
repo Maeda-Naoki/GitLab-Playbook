@@ -3,11 +3,6 @@
     path: /usr/bin/{{ item }}
   register: command
 
-- name: Check exist GitLab
-  stat:
-    path: /opt/gitlab/bin/
-  register: GitLabBin
-
 - name: Link to /opt/gitlab/bin/
   become: true
   file:
@@ -16,4 +11,3 @@
     state: link
   when:
   - command.stat.exists
-  - GitLabBin.stat.exists

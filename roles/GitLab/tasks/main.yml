@@ -21,18 +21,18 @@
   become: true
   command: bash /tmp/script.deb.sh
 
-- name: Link non-packaged executables
-  include_tasks: link2ExtPostgreSQL.yml
-  with_items:
-    - pg_dump
-    - psql
-
 - name: install GitLab
   become: true
   apt:
     name: "gitlab-ce"
     update_cache: yes
     state: latest
+
+- name: Link non-packaged executables
+  include_tasks: link2ExtPostgreSQL.yml
+  with_items:
+    - pg_dump
+    - psql
 
 - name: Change gitlab.rb
   become: true
