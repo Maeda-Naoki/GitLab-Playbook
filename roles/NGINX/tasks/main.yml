@@ -22,3 +22,25 @@
   with_items:
     - /etc/nginx/sites-available
     - /etc/nginx/sites-enabled
+
+- name: Create configuration file for Mattermost
+  become: true
+  template:
+    src: GitLab.j2
+    dest: /etc/nginx/sites-available/GitLab
+
+- name: Create link
+  become: true
+  file:
+    src: /etc/nginx/sites-available/GitLab
+    dest: /etc/nginx/sites-enabled/GitLab
+    state: link
+  notify: Restart NGINX
+
+- name: Add include configuration to nginx.conf
+  become: true
+  replace:
+    dest: /etc/nginx/nginx.conf
+    regexp: "    include /etc/nginx/conf.d/\\*.conf;"
+    replace: "    include /etc/nginx/sites-enabled/*;"
+  notify: Restart NGINX 
