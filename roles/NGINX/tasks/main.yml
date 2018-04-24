@@ -1,3 +1,9 @@
+- name: Add NGINX PGP key
+  become: true
+  apt_key:
+    url: https://nginx.org/keys/nginx_signing.key
+    state: present
+
 - name: install NGINX
   become: true
   apt:
