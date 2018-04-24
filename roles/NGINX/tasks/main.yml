@@ -4,6 +4,15 @@
     url: https://nginx.org/keys/nginx_signing.key
     state: present
 
+- name: Add NGINX mainline repo into source list
+  become: true
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+  with_items:
+    - deb http://nginx.org/packages/mainline/ubuntu/ {{ OS_version.code_name}} nginx
+    - deb-src http://nginx.org/packages/mainline/ubuntu/ {{ OS_version.code_name}} nginx
+
 - name: install NGINX
   become: true
   apt:
